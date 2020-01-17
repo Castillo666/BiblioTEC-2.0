@@ -1,143 +1,75 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package logicadenegocios;
-
-import java.io.Serializable;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
- * @author Kevin Castillo
+ * @author María Paula
  */
-@Entity
-@Table(name = "Horario")
-@NamedQueries({
-    @NamedQuery(name = "Horario.findAll", query = "SELECT h FROM Horario h")
-    , @NamedQuery(name = "Horario.findByIdHorario", query = "SELECT h FROM Horario h WHERE h.idHorario = :idHorario")
-    , @NamedQuery(name = "Horario.findByHoraInicio", query = "SELECT h FROM Horario h WHERE h.horaInicio = :horaInicio")
-    , @NamedQuery(name = "Horario.findByHoraFin", query = "SELECT h FROM Horario h WHERE h.horaFin = :horaFin")
-    , @NamedQuery(name = "Horario.findByDias", query = "SELECT h FROM Horario h WHERE h.dias = :dias")})
-public class Horario implements Serializable {
+public class Horario {
+  private int idHorario;
+  private String horaInicio;
+  private String horaFin;
+  private String dias;
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "idHorario", nullable = false)
-    private Integer idHorario;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "horaInicio", nullable = false, length = 20)
-    private String horaInicio;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "horaFin", nullable = false, length = 20)
-    private String horaFin;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "dias", nullable = false, length = 100)
-    private String dias;
-    @JoinTable(name = "SalaHorario", joinColumns = {
-        @JoinColumn(name = "idHorario", referencedColumnName = "idHorario", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "idSala", referencedColumnName = "identificador", nullable = false)})
-    @ManyToMany
-    private List<Sala> salaList;
+  public Horario(int pIdHorario,String pHoraInicio, String pHoraFin, String pDias) {
+    this.idHorario = pIdHorario;
+    this.horaInicio = pHoraInicio;
+    this.horaFin = pHoraFin;
+    this.dias = pDias;
+  }
 
-    public Horario() {
-    }
-
-    public Horario(Integer idHorario) {
-        this.idHorario = idHorario;
-    }
-
-    public Horario(Integer idHorario, String horaInicio, String horaFin, String dias) {
-        this.idHorario = idHorario;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
-        this.dias = dias;
-    }
-
-    public Integer getIdHorario() {
-        return idHorario;
-    }
-
-    public void setIdHorario(Integer idHorario) {
-        this.idHorario = idHorario;
-    }
-
-    public String getHoraInicio() {
-        return horaInicio;
-    }
-
-    public void setHoraInicio(String horaInicio) {
-        this.horaInicio = horaInicio;
-    }
-
-    public String getHoraFin() {
-        return horaFin;
-    }
-
-    public void setHoraFin(String horaFin) {
-        this.horaFin = horaFin;
-    }
-
-    public String getDias() {
-        return dias;
-    }
-
-    public void setDias(String dias) {
-        this.dias = dias;
-    }
-
-    public List<Sala> getSalaList() {
-        return salaList;
-    }
-
-    public void setSalaList(List<Sala> salaList) {
-        this.salaList = salaList;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idHorario != null ? idHorario.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Horario)) {
-            return false;
-        }
-        Horario other = (Horario) object;
-        if ((this.idHorario == null && other.idHorario != null) || (this.idHorario != null && !this.idHorario.equals(other.idHorario))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "logicadenegocios.Horario[ idHorario=" + idHorario + " ]";
-    }
     
+  public String getHoraInicio() {
+    return horaInicio;
+  }
+
+    
+  public String getHoraFin() {
+    return horaFin;
+  }
+
+    
+  public String getDias() {
+    return dias;
+  }
+  
+  
+  public int getIdHorario() {
+    return idHorario;
+  }
+
+  public void setIdHorario(int idHorario) {
+    this.idHorario = idHorario;
+  }
+  
+  
+   /**
+   * Método para convertir en String toda la información del Horario
+   * 
+   * @return msg, con todos los datos del Horario
+   */
+  @Override
+  public String toString(){
+    String idHorarioS = Integer.toString(idHorario);
+    String msg = "Id del Horario: " + idHorarioS + " hora de Apertura: " + horaInicio
+            + "Hora de cierre: " + horaFin + "Dias hábiles: " + dias;
+    return msg;     
+    } 
+  
+  
+   /**
+   * Método para comparar si un objeto es igual 
+   * 
+   * @param  o el objeto a comparar
+   */
+  public boolean equals(Object o){
+    if(this == o)
+      return true;  
+    if(o==null)
+      return false;
+    if(getClass()!=o.getClass())
+      return false;
+    // convertir el objeto
+    Horario horario = (Horario) o;
+    return idHorario == horario.getIdHorario();
+    }  
 }

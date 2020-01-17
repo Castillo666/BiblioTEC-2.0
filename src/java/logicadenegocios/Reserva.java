@@ -1,225 +1,172 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package logicadenegocios;
-
-import java.io.Serializable;
+import java.util.ArrayList; 
 import java.util.Date;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
- *
- * @author Kevin Castillo
+ * Clase de los objetos de tipo Reserva
+ * 
+ * @author Kevin Castillo, Ma Paula Rodriguez y Raquel Rojas
+ * @version 1.0
  */
-@Entity
-@Table(name = "Reserva")
-@NamedQueries({
-    @NamedQuery(name = "Reserva.findAll", query = "SELECT r FROM Reserva r")
-    , @NamedQuery(name = "Reserva.findByNumero", query = "SELECT r FROM Reserva r WHERE r.numero = :numero")
-    , @NamedQuery(name = "Reserva.findByEstado", query = "SELECT r FROM Reserva r WHERE r.estado = :estado")
-    , @NamedQuery(name = "Reserva.findByFecha", query = "SELECT r FROM Reserva r WHERE r.fecha = :fecha")
-    , @NamedQuery(name = "Reserva.findByHoraInicio", query = "SELECT r FROM Reserva r WHERE r.horaInicio = :horaInicio")
-    , @NamedQuery(name = "Reserva.findByHoraFin", query = "SELECT r FROM Reserva r WHERE r.horaFin = :horaFin")
-    , @NamedQuery(name = "Reserva.findByCodigoCalificacion", query = "SELECT r FROM Reserva r WHERE r.codigoCalificacion = :codigoCalificacion")
-    , @NamedQuery(name = "Reserva.findByAsunto", query = "SELECT r FROM Reserva r WHERE r.asunto = :asunto")
-    , @NamedQuery(name = "Reserva.findByHaSidoCalificado", query = "SELECT r FROM Reserva r WHERE r.haSidoCalificado = :haSidoCalificado")})
-public class Reserva implements Serializable {
+public class Reserva {
+  private String estado = "activa";
+  private Date fecha;
+  private String horaInicio ;
+  private String horaFin;
+  private String codigoCalificacion;
+  private String asunto;
+  private int numero;
+  private int organizador;
+  private ArrayList<Participante> listaParticipantes;
+  private String salaAsignada;
+  public ArrayList<Incidente> listaIncidentes;
+  
+  public Reserva(Date pFecha, String pHoraInicio, String pHoraFin, String pAsunto, int pOrganizador, String pSalaAsignada) {
+    this.fecha = pFecha;
+    this.horaInicio = pHoraInicio;
+    this.horaFin = pHoraFin;
+    this.codigoCalificacion = generarCodigoCalificacion( pSalaAsignada, numero, organizador);
+    this.asunto = pAsunto;
+    this.organizador = pOrganizador;
+    this.salaAsignada = pSalaAsignada;
+  }
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "numero", nullable = false)
-    private Integer numero;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "estado", nullable = false, length = 20)
-    private String estado;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "fecha", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "horaInicio", nullable = false, length = 20)
-    private String horaInicio;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "horaFin", nullable = false, length = 20)
-    private String horaFin;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 500)
-    @Column(name = "codigoCalificacion", nullable = false, length = 500)
-    private String codigoCalificacion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 500)
-    @Column(name = "asunto", nullable = false, length = 500)
-    private String asunto;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "haSidoCalificado", nullable = false)
-    private int haSidoCalificado;
-    @JoinColumn(name = "organizador", referencedColumnName = "carnet", nullable = false)
-    @ManyToOne(optional = false)
-    private Estudiante organizador;
-    @JoinColumn(name = "idSala", referencedColumnName = "identificador", nullable = false)
-    @ManyToOne(optional = false)
-    private Sala idSala;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idReserva")
-    private List<ParticipantesReserva> participantesReservaList;
+  public Reserva() {}
+  
+  public String getEstado() {
+    return estado;
+  }
 
-    public Reserva() {
-    }
+  public void setEstado(String pEstado) {
+    this.estado = pEstado;
+  }
 
-    public Reserva(Integer numero) {
-        this.numero = numero;
-    }
+  public Date getFecha() {
+    return fecha;
+  }
 
-    public Reserva(Integer numero, String estado, Date fecha, String horaInicio, String horaFin, String codigoCalificacion, String asunto, int haSidoCalificado) {
-        this.numero = numero;
-        this.estado = estado;
-        this.fecha = fecha;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
-        this.codigoCalificacion = codigoCalificacion;
-        this.asunto = asunto;
-        this.haSidoCalificado = haSidoCalificado;
-    }
+  public void setFecha(Date fecha) {
+    this.fecha = fecha;
+  }
 
-    public Integer getNumero() {
-        return numero;
-    }
+   
+  public String getHoraInicio() {
+    return horaInicio;
+  }
 
-    public void setNumero(Integer numero) {
-        this.numero = numero;
-    }
+  public void setHoraInicio(String pHoraInicio) {
+    this.horaInicio = pHoraInicio;
+  }
 
-    public String getEstado() {
-        return estado;
-    }
+  public String getHoraFin() {
+    return horaFin;
+  }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
+  public void setHoraFin(String pHoraFin) {
+    this.horaFin = pHoraFin;
+  }
 
-    public Date getFecha() {
-        return fecha;
-    }
+  public String getCodigoCalificacion() {
+    return codigoCalificacion;
+  }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
+  public void setCodigoCalificacion(String pCodigoCalificacion) {
+    this.codigoCalificacion = pCodigoCalificacion;
+  }
 
-    public String getHoraInicio() {
-        return horaInicio;
-    }
+  public String getAsunto() {
+    return asunto;
+  }
 
-    public void setHoraInicio(String horaInicio) {
-        this.horaInicio = horaInicio;
-    }
+  public void setAsunto(String pAsunto) {
+    this.asunto = pAsunto;
+  }
 
-    public String getHoraFin() {
-        return horaFin;
-    }
+  public int getNumero() {
+    return numero;
+  }
 
-    public void setHoraFin(String horaFin) {
-        this.horaFin = horaFin;
-    }
+  public void setNumero(int pNumero) {
+    this.numero = pNumero;
+  }
 
-    public String getCodigoCalificacion() {
-        return codigoCalificacion;
-    }
+  public int getOrganizador() {
+    return organizador;
+  }
 
-    public void setCodigoCalificacion(String codigoCalificacion) {
-        this.codigoCalificacion = codigoCalificacion;
-    }
+  public void setOrganizador(int pOrganizador) {
+    this.organizador = pOrganizador;
+  }
 
-    public String getAsunto() {
-        return asunto;
-    }
+  public ArrayList<Participante> getListaParticipantes() {
+    return listaParticipantes;
+  }
 
-    public void setAsunto(String asunto) {
-        this.asunto = asunto;
-    }
+  public void setListaParticipantes(ArrayList<Participante> pListaParticipantes) {
+    this.listaParticipantes = pListaParticipantes;
+  }
 
-    public int getHaSidoCalificado() {
-        return haSidoCalificado;
-    }
+  public String getSalaAsignada() {
+    return salaAsignada;
+  }
 
-    public void setHaSidoCalificado(int haSidoCalificado) {
-        this.haSidoCalificado = haSidoCalificado;
-    }
+  public void setSalaAsignada(String pSalaAsignada) {
+    this.salaAsignada = pSalaAsignada;
+  }
 
-    public Estudiante getOrganizador() {
-        return organizador;
-    }
+  public ArrayList<Incidente> getListaIncidentes() {
+    return listaIncidentes;
+  }
 
-    public void setOrganizador(Estudiante organizador) {
-        this.organizador = organizador;
-    }
+  public void setListaIncidentes(ArrayList<Incidente> pListaIncidentes) {
+    this.listaIncidentes = pListaIncidentes;
+  }
+  
+  
+  /**
+   * Método para generar el código para calificar una sala
+   * 
+   * @param pIdSala id de la sala 
+   * @param pIdReserva numero de la reserva 
+   * @param pCarnet carnet del estudiante organizador 
+   * @return String, el código de calificación
+   */
+  public String generarCodigoCalificacion(String pIdSala, int pIdReserva, int pCarnet){
+      String idReserva = Integer.toString(pIdReserva);
+      String carnet = Integer.toString(pCarnet);
+      return pIdSala +" - "+ idReserva + " - " + carnet; 
+  }
 
-    public Sala getIdSala() {
-        return idSala;
-    }
-
-    public void setIdSala(Sala idSala) {
-        this.idSala = idSala;
-    }
-
-    public List<ParticipantesReserva> getParticipantesReservaList() {
-        return participantesReservaList;
-    }
-
-    public void setParticipantesReservaList(List<ParticipantesReserva> participantesReservaList) {
-        this.participantesReservaList = participantesReservaList;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (numero != null ? numero.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Reserva)) {
-            return false;
-        }
-        Reserva other = (Reserva) object;
-        if ((this.numero == null && other.numero != null) || (this.numero != null && !this.numero.equals(other.numero))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "logicadenegocios.Reserva[ numero=" + numero + " ]";
-    }
-    
+   
+   /**
+   * Método para convertir en String toda la información del Reserva
+   * 
+   * @return msg, con todos los datos del Reserva
+   */
+  @Override
+  public String toString(){
+    String msg;
+    msg = "Numero de la reserva: " + Integer.toString(numero) + "Hora Inicio: " + horaInicio
+            + "Hora fin: " + horaFin + "asunto: " + "Sala" + salaAsignada + asunto + "organizador " + Integer.toString(organizador)
+            + listaParticipantes.toString() + listaIncidentes.toString();
+    return msg;     
+    } 
+  
+  
+   /**
+   * Método para comparar si un objeto es igual 
+   * 
+   * @param  o el objeto a comparar
+   */
+  public boolean equals(Object o){
+    if(this == o)
+      return true;  
+    if(o==null)
+      return false;
+    if(getClass()!=o.getClass())
+      return false;
+    // convertir el objeto
+    Reserva recurso = (Reserva) o;
+    return numero == recurso.numero;
+  }
 }
