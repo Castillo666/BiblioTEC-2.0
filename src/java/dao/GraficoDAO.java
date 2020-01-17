@@ -32,7 +32,7 @@ public class GraficoDAO {
         conexion = Conexion.getConexion();
         Statement ejecutor;
         ejecutor = conexion.createStatement();
-        rs = ejecutor.executeQuery("select idSala,count(*) as contador from Reserva group by idSala order by contador desc");
+        rs = ejecutor.executeQuery("select idSala,count(*) as contador from esquema.Reserva group by idSala order by contador desc");
       } catch (SQLException ex) {
           Logger.getLogger(GraficoDAO.class.getName()).log(Level.SEVERE, null, ex);
       }
@@ -51,7 +51,7 @@ public class GraficoDAO {
         conexion = Conexion.getConexion();
         Statement ejecutor;
         ejecutor = conexion.createStatement();
-        rs = ejecutor.executeQuery("select top 5 .SalaHorario.idHorario, count(*) as contador from esquema.SalaHorario, esquema.Horario where esquema.SalaHorario.idHorario = esquema.Horario.idHorario group by esquema.SalaHorario.idHorario order by contador desc");
+        rs = ejecutor.executeQuery("select top 5 esquema.SalaHorario.idHorario, count(*) as contador from esquema.SalaHorario, esquema.Horario where esquema.SalaHorario.idHorario = esquema.Horario.idHorario group by esquema.SalaHorario.idHorario order by contador desc");
       } catch (SQLException ex) {
           Logger.getLogger(GraficoDAO.class.getName()).log(Level.SEVERE, null, ex);
       }
@@ -71,7 +71,7 @@ public class GraficoDAO {
         conexion = Conexion.getConexion();
         Statement ejecutor;
         ejecutor = conexion.createStatement();
-        rs = ejecutor.executeQuery("select top 5 Estudiante.carrera, count(*) as contador from esquema.Reserva, esquema.Estudiante, esquema.Sala where esquema.Reserva.organizador = esquema.Estudiante.carnet and esquema.Sala.identificador = esquema.reserva.idSala group by carrera order by contador desc");
+        rs = ejecutor.executeQuery("select top 5 esquema.Estudiante.carrera, count(*) as contador from esquema.Reserva, esquema.Estudiante, esquema.Sala where esquema.Reserva.organizador = esquema.Estudiante.carnet and esquema.Sala.identificador = esquema.reserva.idSala group by carrera order by contador desc");
       } catch (SQLException ex) {
           Logger.getLogger(GraficoDAO.class.getName()).log(Level.SEVERE, null, ex);
       }
@@ -90,7 +90,7 @@ public class GraficoDAO {
         conexion = Conexion.getConexion();
         Statement ejecutor;
         ejecutor = conexion.createStatement();
-        rs = ejecutor.executeQuery("select top 5 Sala.identificador, esquema.Sala.calificacion from esquema.Sala order by calificacion desc");
+        rs = ejecutor.executeQuery("select top 5 esquema.Sala.identificador, esquema.Sala.calificacion from esquema.Sala order by calificacion desc");
       } catch (SQLException ex) {
           Logger.getLogger(GraficoDAO.class.getName()).log(Level.SEVERE, null, ex);
       }

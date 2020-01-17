@@ -32,7 +32,7 @@ public class SalaDAO {
    * @param pSala la sala ha insertar 
    * @return true si se inserta con éxito, false en caso contrario 
    */ 
-  /*public boolean registrarSala(Sala pSala){
+  public boolean registrarSala(Sala pSala){
   try{
     Sala sala = pSala;
     String estado = sala.getEstado();
@@ -57,7 +57,7 @@ public class SalaDAO {
     System.out.println(e);
     return false;
   }return false;
-}*/
+}
   
 
    /**

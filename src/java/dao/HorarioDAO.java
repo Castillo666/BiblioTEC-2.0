@@ -29,7 +29,7 @@ public class HorarioDAO {
     try{
       Connection conexion = Conexion.getConexion();
       Statement ejecutor = conexion.createStatement();
-      rs = ejecutor.executeQuery("select *from Horario");
+      rs = ejecutor.executeQuery("select *from esquema.Horario");
     }catch(SQLException e){
       System.out.println(e);  
     }
@@ -49,7 +49,7 @@ public class HorarioDAO {
     try{
       Connection conexion = Conexion.getConexion();
       Statement ejecutor = conexion.createStatement();
-      rs = ejecutor.executeQuery("select *from Horario where idHorario = " + pId );
+      rs = ejecutor.executeQuery("select *from esquema.Horario where idHorario = " + pId );
     }catch(SQLException e){
       System.out.println(e);  
     }

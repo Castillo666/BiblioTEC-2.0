@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+     <h2>Registrar Nuevo Estudiante</h2>
+      <form action = "addEstudiante" method = "get">
+          
+        Carnet: <input type="number" name = "carnetEstudiante" ></input>
+        <br></br>
+        Nombre:<input type="text" name = "nombreEstudiante" ></input>
+        <br></br>
+        email: <input type="text" name = "emailEstudiante" ></input>
+        <br></br>
+        Telefono:  <input type="text" name = "telEstudiante" ></input>
+        <br></br>
+        
+     <select name="carrera">
+        <option value="ATI">Ati</option>
+        <option value="IB">Ing.Biotecnología</option>
+        <option value="IC">Ing.Computación </option>
+        <option value="IDI">Ing. Diseño Industrial</option>
+     </select>
+  <br><br>
+    <input type="submit" value = "Registrar Estudiante"></input>
+</html>

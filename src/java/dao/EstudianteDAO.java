@@ -54,7 +54,16 @@ public class EstudianteDAO {
     int rs = 0;
     Conexion cn = new Conexion();
     conexion = cn.getConexion();
-    cstmt = conexion.prepareCall("{call dbo.agregarEstudiante(?,?,?,?,?,?)}");
+    String  query = " execute dbo.createSala @identificador = ? ,"
+        + "@ubicacion = ? ,@capacidadMax = ? ,@estado = ?,@calificacion = ?";
+    CallableStatement consulta = conexion.prepareCall(query);
+    consulta.setString(1, "SAL-00000");
+    consulta.setString(2,"uh");
+    consulta.setInt(3,20);
+    consulta.setString(4,"acti");
+    consulta.setInt(5,100);
+    consulta.execute();
+   /* cstmt = conexion.prepareCall("{call dbo.agregarEstudiante(?,?,?,?,?,?)}");
     cstmt.setInt(1,pCarnet);
     cstmt.setString(2,pNombreCompleto);
     cstmt.setString(3,pCarrera);
@@ -64,7 +73,10 @@ public class EstudianteDAO {
     //se utiliza executeUpdate porque retorna un 1 si se inserto el objeto, 0 en caso contrario
     rs = cstmt.executeUpdate();
     System.out.println(rs);
-    return rs;
+    return rs;*/
+   System.out.println("si");
+   return 1;
+   
   }
  
   
@@ -96,7 +108,7 @@ public class EstudianteDAO {
     try{
       conexion = Conexion.getConexion();
       Statement ejecutor = conexion.createStatement();
-      rs = ejecutor.executeQuery("select * from Reserva where organizador = " + pCarnet );
+      rs = ejecutor.executeQuery("select * from esquema.Reserva where organizador = " + pCarnet );
     }catch(SQLException e){
       System.out.println(e);  
     }
@@ -114,7 +126,7 @@ public class EstudianteDAO {
     try{
       conexion = Conexion.getConexion();
       Statement ejecutor = conexion.createStatement();
-      rs = ejecutor.executeQuery("select numIncidente,detalle,valor,fecha from Incidente, IncidenteReserva where idIncidente = numIncidente and idReserva = " + pIdReserva );
+      rs = ejecutor.executeQuery("select numIncidente,detalle,valor,fecha from esquema.Incidente, esquema.IncidenteReserva where idIncidente = numIncidente and idReserva = " + pIdReserva );
     }catch(SQLException e){
       System.out.println(e);  
     }

@@ -19,14 +19,13 @@ public class UsuarioDAO {
    * @return usuario 
    * @throws SQLException si el procedimiento no se realizo con exito 
    */
-  /*
   public Usuario iniciarSesion(Usuario usuario) throws SQLException{
     if(comprobarContraseña(usuario.getNombreUsuario(),usuario.getContraseña())==1){
       return usuario;
     } else{
       return null;
     }
-  }*/
+  }
   
   
   /**

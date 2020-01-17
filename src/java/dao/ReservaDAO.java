@@ -6,6 +6,7 @@
 package dao;
 
 import conexion.Conexion;
+import static dao.IncidenteDAO.conexion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -34,14 +35,12 @@ public class ReservaDAO {
    * @throws SQLException si el procedimiento no se ejecuta con exito
    */
   public Reserva agregarReserva(Reserva reserva) throws SQLException{
-    /*if(storeProcedureAgregarReserva(reserva.getEstado(),reserva.getFecha(),reserva.getHoraInicio(), reserva.getHoraFin(),reserva.getCodigoCalificacion(),reserva.getAsunto(),reserva.getOrganizador(),reserva.getSalaAsignada())>0){
+    if(storeProcedureAgregarReserva(reserva.getEstado(),reserva.getFecha(),reserva.getHoraInicio(), reserva.getHoraFin(),reserva.getCodigoCalificacion(),reserva.getAsunto(),reserva.getOrganizador(),reserva.getSalaAsignada())>0){
       return reserva;    
     }
     else{
-      return null;   */
-      System.out.println(reserva.toString());
-      return reserva;
-    //} 
+      return null;   
+    }
   }
   
   
@@ -56,12 +55,12 @@ public class ReservaDAO {
     ResultSet rs = null;
     conexion = Conexion.getConexion();
     if("".equals(pNombreRecurso)){
-      CallableStatement cstmt = conexion.prepareCall("{call consultarSalas(?)}");
+      CallableStatement cstmt = conexion.prepareCall("{call esquema.consultarSalas(?)}");
     cstmt.setInt(1, pCapacidadMin);
     rs = cstmt.executeQuery();
     return rs;  
     } else {
-      CallableStatement cstmt = conexion.prepareCall("{call verificarRecursoSala(?,?)}");
+      CallableStatement cstmt = conexion.prepareCall("{call esquema.verificarRecursoSala(?,?)}");
       cstmt.setString(1, pNombreRecurso);
       cstmt.setInt(2, pCapacidadMin);
       rs = cstmt.executeQuery();
@@ -87,7 +86,7 @@ public class ReservaDAO {
     CallableStatement cstmt = null;
     int rs = 0;
     conexion = Conexion.getConexion();
-    cstmt = conexion.prepareCall("{call agregarReserva(?,?,?,?,?,?,?,?)}");
+    cstmt = conexion.prepareCall("{call esquema.agregarReserva(?,?,?,?,?,?,?,?)}");
     cstmt.setString(1,pEstado);
     java.sql.Date fecha = new java.sql.Date(pFecha.getTime());
     cstmt.setDate(2,fecha);
@@ -112,7 +111,7 @@ public class ReservaDAO {
     int idReserva =0;
     CallableStatement cstmt = null;
     conexion = Conexion.getConexion();
-    cstmt = conexion.prepareCall("{call obtenerIdReserva()}");
+    cstmt = conexion.prepareCall("{call esquema.obtenerIdReserva()}");
     rs = cstmt.executeQuery();
     while(rs.next()){
       idReserva = rs.getInt(1);
@@ -161,7 +160,7 @@ public class ReservaDAO {
     int rs = 0;
     CallableStatement cstmt = null;        
     conexion = Conexion.getConexion();
-    cstmt = conexion.prepareCall("{call cancelarReserva(?)}");
+    cstmt = conexion.prepareCall("{call esquema.cancelarReserva(?)}");
     cstmt.setInt(1, pNumero);
     rs = cstmt.executeUpdate();
     return rs;
@@ -179,7 +178,7 @@ public class ReservaDAO {
     ResultSet res = null;
     Connection conexion = Conexion.getConexion();
     Statement ejecutor = conexion.createStatement();
-    res = ejecutor.executeQuery("execute codigoUsado '" + pCodigo +"'");
+    res = ejecutor.executeQuery("execute esquema.codigoUsado '" + pCodigo +"'");
     return res;
   }
   
@@ -194,7 +193,7 @@ public class ReservaDAO {
     boolean res = false;
     try{
       conexion = Conexion.getConexion();
-      String query = "Execute usarCodigo @idReserva = ?";
+      String query = "Execute esquema.usarCodigo @idReserva = ?";
       CallableStatement consulta = conexion.prepareCall(query);
       consulta.setInt(1,pReserva);
       consulta.execute();
@@ -218,7 +217,7 @@ public class ReservaDAO {
     String asunto = "Notificación de cancelacion de reserva";
     CallableStatement cstmt = null;
     conexion = Conexion.getConexion();
-    cstmt = conexion.prepareCall("{call obtenerEmailParticipantes(?)}");
+    cstmt = conexion.prepareCall("{call esquema.obtenerEmailParticipantes(?)}");
     cstmt.setInt(1, pNumero);
     rs = cstmt.executeQuery();
     while(rs.next()){
@@ -239,7 +238,7 @@ public class ReservaDAO {
     String asunto = "Notificación de cancelacion de reserva";
     CallableStatement cstmt = null;
     conexion = Conexion.getConexion();
-    cstmt = conexion.prepareCall("{call obtenerCorreoEstudiante(?)}");
+    cstmt = conexion.prepareCall("{call esquema.obtenerCorreoEstudiante(?)}");
     cstmt.setInt(1, pOrganizador);
     rs = cstmt.executeQuery();
     while(rs.next()){
@@ -255,7 +254,7 @@ public class ReservaDAO {
     ResultSet rs = null;
     conexion = Conexion.getConexion();
     Statement ejecutor = conexion.createStatement();
-    rs = ejecutor.executeQuery("{call comprobarFechaReservas}");
+    rs = ejecutor.executeQuery("{call esquema.comprobarFechaReservas}");
     return rs;
   }
   
@@ -267,7 +266,7 @@ public class ReservaDAO {
   public void bajarCalificacionEstudiante(int pOrganizador, int valor) throws SQLException{
     CallableStatement cstmt = null;
     conexion = Conexion.getConexion();
-    cstmt = conexion.prepareCall("{call bajarCalificacionEstudiante(?,?)}");
+    cstmt = conexion.prepareCall("{call esquema.bajarCalificacionEstudiante(?,?)}");
     cstmt.setInt(1,pOrganizador);
     cstmt.setInt(2,valor);
     cstmt.executeUpdate();
@@ -284,7 +283,7 @@ public class ReservaDAO {
     int calificacion = 0;
     CallableStatement cstmt = null;        
     conexion = Conexion.getConexion();
-    cstmt = conexion.prepareCall("{call obtenerCalificacionEstudiante(?)}");
+    cstmt = conexion.prepareCall("{call esquema.obtenerCalificacionEstudiante(?)}");
     cstmt.setInt(1, pOrganizador);
     rs = cstmt.executeQuery();
     while(rs.next()){
@@ -306,7 +305,7 @@ public class ReservaDAO {
     int numSemana = obtenerNumSemana(pFecha);
     CallableStatement cstmt = null;        
     conexion = Conexion.getConexion();
-    cstmt = conexion.prepareCall("{call obtenerFechaReserva(?)}");
+    cstmt = conexion.prepareCall("{call esquema.obtenerFechaReserva(?)}");
     cstmt.setInt(1,pOrganizador);
     rs = cstmt.executeQuery();
     while(rs.next()){
@@ -328,7 +327,7 @@ public class ReservaDAO {
     int numSemana = 0;
     CallableStatement cstmt = null;        
     conexion = Conexion.getConexion();
-    cstmt = conexion.prepareCall("{call obtenerNumSemana(?)}");
+    cstmt = conexion.prepareCall("{call esquema.obtenerNumSemana(?)}");
     java.sql.Date fecha = new java.sql.Date(pFecha.getTime());
     cstmt.setDate(1,fecha);
     rs = cstmt.executeQuery();
@@ -350,7 +349,7 @@ public class ReservaDAO {
     int resultado =0;
     Conexion cn = new Conexion();
     conexion = cn.getConexion();
-    cstmt = conexion.prepareCall("{call existeEstudiante(?)}");
+    cstmt = conexion.prepareCall("{call esquema.existeEstudiante(?)}");
     cstmt.setInt(1, pOrganizador);
     cstmt.executeQuery();
     rs = cstmt.getResultSet();
@@ -373,7 +372,7 @@ public class ReservaDAO {
     CallableStatement cstmt = null;
     ResultSet rs = null;
     conexion = Conexion.getConexion();
-    cstmt = conexion.prepareCall("{call obtenerCorreoEstudiante(?)}"); 
+    cstmt = conexion.prepareCall("{call esquema.obtenerCorreoEstudiante(?)}"); 
     cstmt.setInt(1, pOrganizador);
     rs = cstmt.executeQuery();
     while(rs.next()){
@@ -401,7 +400,7 @@ public class ReservaDAO {
    * @param pMensaje mensaje a enviar al estudiante
    */
   public void notificarOrganizadorSMS(String pTelefono,String pMensaje){
-    //EnviarSMS.enviarSMS(pTelefono, pMensaje);
+    EnviarSMS.enviarSMS(pTelefono, pMensaje);
   }
   
   /**
@@ -415,7 +414,7 @@ public class ReservaDAO {
     CallableStatement cstmt = null;
     ResultSet rs = null;
     conexion = Conexion.getConexion();
-    cstmt = conexion.prepareCall("{call obtenerTelefonoEstudiante(?)}"); 
+    cstmt = conexion.prepareCall("{call esquema.obtenerTelefonoEstudiante(?)}"); 
     cstmt.setInt(1, pOrganizador);
     rs = cstmt.executeQuery();
     while(rs.next()){

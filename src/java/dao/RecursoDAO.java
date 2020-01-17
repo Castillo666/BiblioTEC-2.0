@@ -27,7 +27,7 @@ public class RecursoDAO {
     try{
       Connection conexion = Conexion.getConexion();
       Statement ejecutor = conexion.createStatement();
-      rs = ejecutor.executeQuery("select *from Recurso");
+      rs = ejecutor.executeQuery("select *from esquema.Recurso");
     }catch(SQLException e){
       System.out.println(e);  
     }
@@ -46,7 +46,7 @@ public class RecursoDAO {
     try{
       Connection conexion = Conexion.getConexion();
       Statement ejecutor = conexion.createStatement();
-      rs = ejecutor.executeQuery("select *from Recurso where nombre = " + pNombre );
+      rs = ejecutor.executeQuery("select *from esquema.Recurso where nombre = " + pNombre );
     }catch(SQLException e){
       System.out.println(e);  
     }

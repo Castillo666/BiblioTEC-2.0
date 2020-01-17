@@ -28,7 +28,7 @@ public class HorarioExcepcionDAO {
     try{
       Connection conexion = Conexion.getConexion();
       Statement ejecutor = conexion.createStatement();
-      rs = ejecutor.executeQuery("select *from HorarioExcepcion");
+      rs = ejecutor.executeQuery("select *from esquema.HorarioExcepcion");
     }catch(SQLException e){
       System.out.println(e);  
     }

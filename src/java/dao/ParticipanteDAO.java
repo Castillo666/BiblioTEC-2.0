@@ -27,7 +27,7 @@ public class ParticipanteDAO {
     CallableStatement cstmt = null;
     int contador = 0;
     conexion = Conexion.getConexion();
-    cstmt = conexion.prepareCall("{call agregarParticipantesReserva(?,?,?)}");
+    cstmt = conexion.prepareCall("{call esquema.agregarParticipantesReserva(?,?,?)}");
     while(PlistaParticipantes.size()-1>=contador){
         cstmt.setInt(1,idReserva);
         cstmt.setString(2,PlistaParticipantes.get(contador).getNombre());
@@ -47,7 +47,7 @@ public class ParticipanteDAO {
     int rs = 0;
     int contador = 0;
     conexion = Conexion.getConexion();
-    cstmt = conexion.prepareCall("{call agregarParticipantes(?,?)}");
+    cstmt = conexion.prepareCall("{call esquema.agregarParticipantes(?,?)}");
     while(PlistaParticipantes.size()-1>=contador){
         cstmt.setString(1,PlistaParticipantes.get(contador).getNombre());
         cstmt.setString(2,PlistaParticipantes.get(contador).getEmail());
