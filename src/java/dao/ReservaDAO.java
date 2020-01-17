@@ -6,7 +6,6 @@
 package dao;
 
 import conexion.Conexion;
-import static dao.IncidenteDAO.conexion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -400,7 +399,7 @@ public class ReservaDAO {
    * @param pMensaje mensaje a enviar al estudiante
    */
   public void notificarOrganizadorSMS(String pTelefono,String pMensaje){
-    EnviarSMS.enviarSMS(pTelefono, pMensaje);
+    //EnviarSMS.enviarSMS(pTelefono, pMensaje);
   }
   
   /**

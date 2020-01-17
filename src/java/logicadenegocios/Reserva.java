@@ -19,7 +19,6 @@ public class Reserva {
   private int organizador;
   private ArrayList<Participante> listaParticipantes;
   private String salaAsignada;
-  public ArrayList<Incidente> listaIncidentes;
   
   public Reserva(Date pFecha, String pHoraInicio, String pHoraFin, String pAsunto, int pOrganizador, String pSalaAsignada) {
     this.fecha = pFecha;
@@ -113,14 +112,6 @@ public class Reserva {
   public void setSalaAsignada(String pSalaAsignada) {
     this.salaAsignada = pSalaAsignada;
   }
-
-  public ArrayList<Incidente> getListaIncidentes() {
-    return listaIncidentes;
-  }
-
-  public void setListaIncidentes(ArrayList<Incidente> pListaIncidentes) {
-    this.listaIncidentes = pListaIncidentes;
-  }
   
   
   /**
@@ -147,8 +138,7 @@ public class Reserva {
   public String toString(){
     String msg;
     msg = "Numero de la reserva: " + Integer.toString(numero) + "Hora Inicio: " + horaInicio
-            + "Hora fin: " + horaFin + "asunto: " + "Sala" + salaAsignada + asunto + "organizador " + Integer.toString(organizador)
-            + listaParticipantes.toString() + listaIncidentes.toString();
+            + "Hora fin: " + horaFin + "asunto: " + "Sala" + salaAsignada + asunto + "organizador " + Integer.toString(organizador);
     return msg;     
     } 
   
