@@ -137,8 +137,8 @@ public class Reserva {
   @Override
   public String toString(){
     String msg;
-    msg = "Numero de la reserva: " + Integer.toString(numero) + "Hora Inicio: " + horaInicio
-            + "Hora fin: " + horaFin + "asunto: " + "Sala" + salaAsignada + asunto + "organizador " + Integer.toString(organizador);
+    msg = "Numero de la reserva: " + Integer.toString(numero) + "\tHora Inicio: " + horaInicio
+            + "\tHora fin: " + horaFin + "\tAsunto: " + asunto + "\tSala" + salaAsignada + "\torganizador " + Integer.toString(organizador);
     return msg;     
     } 
   

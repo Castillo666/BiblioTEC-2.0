@@ -33,14 +33,16 @@ public class ReservaDAO {
    * @return reserva 
    * @throws SQLException si el procedimiento no se ejecuta con exito
    */
-  /*public Reserva agregarReserva(Reserva reserva) throws SQLException{
-    if(storeProcedureAgregarReserva(reserva.getEstado(),reserva.getFecha(),reserva.getHoraInicio(), reserva.getHoraFin(),reserva.getCodigoCalificacion(),reserva.getAsunto(),reserva.getOrganizador(),reserva.getIdSala()>0){
+  public Reserva agregarReserva(Reserva reserva) throws SQLException{
+    /*if(storeProcedureAgregarReserva(reserva.getEstado(),reserva.getFecha(),reserva.getHoraInicio(), reserva.getHoraFin(),reserva.getCodigoCalificacion(),reserva.getAsunto(),reserva.getOrganizador(),reserva.getSalaAsignada())>0){
       return reserva;    
     }
     else{
-      return null;   
-    }
-  }*/
+      return null;   */
+      System.out.println(reserva.toString());
+      return reserva;
+    //} 
+  }
   
   
   /**
