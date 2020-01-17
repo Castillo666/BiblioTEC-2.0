@@ -7,6 +7,8 @@ package logicadenegocios;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,6 +35,8 @@ import javax.validation.constraints.Size;
     , @NamedQuery(name = "Estudiante.findByEmail", query = "SELECT e FROM Estudiante e WHERE e.email = :email")
     , @NamedQuery(name = "Estudiante.findByCalificacion", query = "SELECT e FROM Estudiante e WHERE e.calificacion = :calificacion")
     , @NamedQuery(name = "Estudiante.findByTelefono", query = "SELECT e FROM Estudiante e WHERE e.telefono = :telefono")})
+@ManagedBean(name="Estudiante")
+@SessionScoped
 public class Estudiante implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -164,6 +168,11 @@ public class Estudiante implements Serializable {
     @Override
     public String toString() {
         return "logicadenegocios.Estudiante[ carnet=" + carnet + " ]";
+    }
+    
+    public String prueba(){
+      System.out.println("CACA");
+      return "agregarEstudiante";
     }
     
 }
