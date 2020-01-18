@@ -5,13 +5,22 @@
  */
 package controlador;
 
+import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+import conexion.Conexion;
 import dao.ReservaDAO;
+import static dao.ReservaDAO.conexion;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.activation.DataSource;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -67,14 +76,6 @@ public class ControladorReservarSala extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
       PrintWriter salida = response.getWriter();
-     Date fecha = new Date("22/05/2019");
-      logicadenegocios = new Reserva(fecha,"15:30","18:30","ASUNTO",2018111900,request.getParameter("nombre"));
-      salida.println(logicadenegocios.toString());
-       try {
-            dao.agregarReserva(logicadenegocios);
-        } catch (SQLException ex) {
-            Logger.getLogger(ControladorReservarSala.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     /**

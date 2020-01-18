@@ -40,7 +40,7 @@ public class UsuarioDAO {
     CallableStatement cstmt = null;
     ResultSet rs = null;
     Conexion cn = new Conexion();
-    conexion = cn.getConexion();
+    conexion = cn.conectarMySQL();
     cstmt = conexion.prepareCall("{call dbo.consultarUsuario(?,?)}");
     cstmt.setString(1, pUsuario);
     cstmt.setString(2, pContraseña);

@@ -6,7 +6,6 @@
 package dao;
 
 import conexion.Conexion;
-import static dao.IncidenteDAO.conexion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -53,7 +52,7 @@ public class ReservaDAO {
    */
   public ResultSet consultarSalas(int pCapacidadMin,String pNombreRecurso) throws SQLException{
     ResultSet rs = null;
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     if("".equals(pNombreRecurso)){
       CallableStatement cstmt = conexion.prepareCall("{call esquema.consultarSalas(?)}");
     cstmt.setInt(1, pCapacidadMin);
@@ -85,7 +84,7 @@ public class ReservaDAO {
     String pHoraFin,String pCodigoCalificacion,String pAsunto,int pOrganizador,String pIdSala) throws SQLException{
     CallableStatement cstmt = null;
     int rs = 0;
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     cstmt = conexion.prepareCall("{call esquema.agregarReserva(?,?,?,?,?,?,?,?)}");
     cstmt.setString(1,pEstado);
     java.sql.Date fecha = new java.sql.Date(pFecha.getTime());
@@ -110,7 +109,7 @@ public class ReservaDAO {
     ResultSet rs = null;
     int idReserva =0;
     CallableStatement cstmt = null;
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     cstmt = conexion.prepareCall("{call esquema.obtenerIdReserva()}");
     rs = cstmt.executeQuery();
     while(rs.next()){
@@ -129,7 +128,7 @@ public class ReservaDAO {
   public ResultSet getProxReservasSala(String pIdentificador) throws SQLException{
     ResultSet res = null;
     String identificador = pIdentificador;
-    Connection conexion = Conexion.getConexion();
+    Connection conexion = Conexion.conectarMySQL();
     Statement ejecutor = conexion.createStatement();
     res = ejecutor.executeQuery("execute dbo.getProxReservas '" + identificador +"'");
     return res;
@@ -143,9 +142,9 @@ public class ReservaDAO {
    */
   public ResultSet consultarReservas() throws SQLException{
     ResultSet rs = null;
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     Statement ejecutor = conexion.createStatement();
-    rs = ejecutor.executeQuery("{call esquema.consultarReservas}");
+    rs = ejecutor.executeQuery("{call consultarReservas}");
     return rs;
   }
   
@@ -159,7 +158,7 @@ public class ReservaDAO {
   public int cancelarReserva(int pNumero) throws SQLException{
     int rs = 0;
     CallableStatement cstmt = null;        
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     cstmt = conexion.prepareCall("{call esquema.cancelarReserva(?)}");
     cstmt.setInt(1, pNumero);
     rs = cstmt.executeUpdate();
@@ -176,7 +175,7 @@ public class ReservaDAO {
    */ 
    public ResultSet verificarCodigo(String pCodigo) throws SQLException{
     ResultSet res = null;
-    Connection conexion = Conexion.getConexion();
+    Connection conexion = Conexion.conectarMySQL();
     Statement ejecutor = conexion.createStatement();
     res = ejecutor.executeQuery("execute esquema.codigoUsado '" + pCodigo +"'");
     return res;
@@ -192,7 +191,7 @@ public class ReservaDAO {
   public boolean usarCodigo(int pReserva){
     boolean res = false;
     try{
-      conexion = Conexion.getConexion();
+      conexion = Conexion.conectarMySQL();
       String query = "Execute esquema.usarCodigo @idReserva = ?";
       CallableStatement consulta = conexion.prepareCall(query);
       consulta.setInt(1,pReserva);
@@ -216,7 +215,7 @@ public class ReservaDAO {
     String msg = "Ha sido cancelada la reserva de la sala: "+pIdSala;
     String asunto = "Notificación de cancelacion de reserva";
     CallableStatement cstmt = null;
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     cstmt = conexion.prepareCall("{call esquema.obtenerEmailParticipantes(?)}");
     cstmt.setInt(1, pNumero);
     rs = cstmt.executeQuery();
@@ -237,7 +236,7 @@ public class ReservaDAO {
     String msg = "Ha sido cancelada la reserva de la sala: "+pIdSala;
     String asunto = "Notificación de cancelacion de reserva";
     CallableStatement cstmt = null;
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     cstmt = conexion.prepareCall("{call esquema.obtenerCorreoEstudiante(?)}");
     cstmt.setInt(1, pOrganizador);
     rs = cstmt.executeQuery();
@@ -252,7 +251,7 @@ public class ReservaDAO {
    */
   public ResultSet consultarReservasValidas() throws SQLException{
     ResultSet rs = null;
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     Statement ejecutor = conexion.createStatement();
     rs = ejecutor.executeQuery("{call esquema.comprobarFechaReservas}");
     return rs;
@@ -265,7 +264,7 @@ public class ReservaDAO {
    */
   public void bajarCalificacionEstudiante(int pOrganizador, int valor) throws SQLException{
     CallableStatement cstmt = null;
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     cstmt = conexion.prepareCall("{call esquema.bajarCalificacionEstudiante(?,?)}");
     cstmt.setInt(1,pOrganizador);
     cstmt.setInt(2,valor);
@@ -282,7 +281,7 @@ public class ReservaDAO {
     ResultSet rs = null;
     int calificacion = 0;
     CallableStatement cstmt = null;        
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     cstmt = conexion.prepareCall("{call esquema.obtenerCalificacionEstudiante(?)}");
     cstmt.setInt(1, pOrganizador);
     rs = cstmt.executeQuery();
@@ -304,7 +303,7 @@ public class ReservaDAO {
     int contador = 0;
     int numSemana = obtenerNumSemana(pFecha);
     CallableStatement cstmt = null;        
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     cstmt = conexion.prepareCall("{call esquema.obtenerFechaReserva(?)}");
     cstmt.setInt(1,pOrganizador);
     rs = cstmt.executeQuery();
@@ -326,7 +325,7 @@ public class ReservaDAO {
     ResultSet rs = null;
     int numSemana = 0;
     CallableStatement cstmt = null;        
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     cstmt = conexion.prepareCall("{call esquema.obtenerNumSemana(?)}");
     java.sql.Date fecha = new java.sql.Date(pFecha.getTime());
     cstmt.setDate(1,fecha);
@@ -348,7 +347,7 @@ public class ReservaDAO {
     ResultSet rs = null;
     int resultado =0;
     Conexion cn = new Conexion();
-    conexion = cn.getConexion();
+    conexion = cn.conectarMySQL();
     cstmt = conexion.prepareCall("{call esquema.existeEstudiante(?)}");
     cstmt.setInt(1, pOrganizador);
     cstmt.executeQuery();
@@ -371,7 +370,7 @@ public class ReservaDAO {
     String correo = "";
     CallableStatement cstmt = null;
     ResultSet rs = null;
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     cstmt = conexion.prepareCall("{call esquema.obtenerCorreoEstudiante(?)}"); 
     cstmt.setInt(1, pOrganizador);
     rs = cstmt.executeQuery();
@@ -400,7 +399,7 @@ public class ReservaDAO {
    * @param pMensaje mensaje a enviar al estudiante
    */
   public void notificarOrganizadorSMS(String pTelefono,String pMensaje){
-    EnviarSMS.enviarSMS(pTelefono, pMensaje);
+    //EnviarSMS.enviarSMS(pTelefono, pMensaje);
   }
   
   /**
@@ -413,7 +412,7 @@ public class ReservaDAO {
     String telefono = "";
     CallableStatement cstmt = null;
     ResultSet rs = null;
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     cstmt = conexion.prepareCall("{call esquema.obtenerTelefonoEstudiante(?)}"); 
     cstmt.setInt(1, pOrganizador);
     rs = cstmt.executeQuery();

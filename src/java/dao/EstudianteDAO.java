@@ -52,8 +52,7 @@ public class EstudianteDAO {
       
     CallableStatement cstmt = null;
     int rs = 0;
-    Conexion cn = new Conexion();
-    conexion = cn.getConexion();
+    conexion = Conexion.conectarMySQL();
     String  query = " execute dbo.createSala @identificador = ? ,"
         + "@ubicacion = ? ,@capacidadMax = ? ,@estado = ?,@calificacion = ?";
     CallableStatement consulta = conexion.prepareCall(query);
@@ -88,7 +87,7 @@ public class EstudianteDAO {
   public ResultSet storeProcedureConsultarEstudiante(int pCarnet){
     ResultSet rs = null;
     try{
-      conexion = Conexion.getConexion();
+      conexion = Conexion.conectarMySQL();
       Statement ejecutor = conexion.createStatement();
       rs = ejecutor.executeQuery("{call dbo.consultarEstudiante(pCarnet)}");
     }catch(SQLException e){
@@ -106,7 +105,7 @@ public class EstudianteDAO {
   public ResultSet getReservasEstudiante(int pCarnet){
     ResultSet rs = null;
     try{
-      conexion = Conexion.getConexion();
+      conexion = Conexion.conectarMySQL();
       Statement ejecutor = conexion.createStatement();
       rs = ejecutor.executeQuery("select * from esquema.Reserva where organizador = " + pCarnet );
     }catch(SQLException e){
@@ -124,7 +123,7 @@ public class EstudianteDAO {
   public ResultSet getIncidentesReserva(int pIdReserva){
     ResultSet rs = null;
     try{
-      conexion = Conexion.getConexion();
+      conexion = Conexion.conectarMySQL();
       Statement ejecutor = conexion.createStatement();
       rs = ejecutor.executeQuery("select numIncidente,detalle,valor,fecha from esquema.Incidente, esquema.IncidenteReserva where idIncidente = numIncidente and idReserva = " + pIdReserva );
     }catch(SQLException e){

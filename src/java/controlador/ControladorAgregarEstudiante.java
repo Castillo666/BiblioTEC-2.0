@@ -5,12 +5,25 @@
  */
 package controlador;
 
+import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+import conexion.Conexion;
 import dao.EstudianteDAO;
+import static dao.EstudianteDAO.conexion;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Resource;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.JOptionPane;
 import logicadenegocios.Estudiante;
+import javax.sql.DataSource;
 
 /**
  *
@@ -28,7 +42,8 @@ import logicadenegocios.Estudiante;
 public class ControladorAgregarEstudiante extends HttpServlet {
     EstudianteDAO dao = new EstudianteDAO();
     Estudiante modelo;
-
+    Connection conexion;
+    PreparedStatement ps;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -67,7 +82,7 @@ public class ControladorAgregarEstudiante extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
+        /*try {
             PrintWriter salida = response.getWriter();
             modelo = new Estudiante(201890,"Laura","IDI","h","980");
             Estudiante estudianteActual = dao.agregarEstudiante(modelo);
@@ -83,11 +98,20 @@ public class ControladorAgregarEstudiante extends HttpServlet {
             System.out.println("wi");
 
             Logger.getLogger(ControladorAgregarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        PrintWriter salida = response.getWriter();
+        conexion = Conexion.conectarMySQL();
+        String sql = ("select * from Estudiante");
+        try {
+            ps = (com.mysql.jdbc.PreparedStatement)conexion.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+              salida.println(rs.getInt(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorAgregarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
         }
    } 
-
-      
-
     /**
      * Handles the HTTP <code>POST</code> method.
      *

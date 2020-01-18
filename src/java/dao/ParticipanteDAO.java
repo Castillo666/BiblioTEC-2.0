@@ -26,7 +26,7 @@ public class ParticipanteDAO {
   public void agregarParticipantesReserva(ArrayList<Participante> PlistaParticipantes,int idReserva) throws SQLException{
     CallableStatement cstmt = null;
     int contador = 0;
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     cstmt = conexion.prepareCall("{call esquema.agregarParticipantesReserva(?,?,?)}");
     while(PlistaParticipantes.size()-1>=contador){
         cstmt.setInt(1,idReserva);
@@ -46,7 +46,7 @@ public class ParticipanteDAO {
     CallableStatement cstmt = null;
     int rs = 0;
     int contador = 0;
-    conexion = Conexion.getConexion();
+    conexion = Conexion.conectarMySQL();
     cstmt = conexion.prepareCall("{call esquema.agregarParticipantes(?,?)}");
     while(PlistaParticipantes.size()-1>=contador){
         cstmt.setString(1,PlistaParticipantes.get(contador).getNombre());
