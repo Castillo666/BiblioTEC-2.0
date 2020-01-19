@@ -25,13 +25,13 @@ public class EstudianteDAO {
    * @return estudiante
    * @throws SQLException 
    */
-  public Estudiante agregarEstudiante(Estudiante estudiante) throws SQLException{
+  public boolean agregarEstudiante(Estudiante estudiante) throws SQLException{
     if(storeProcedureAgregarEstudiante(estudiante.getCarnet(),estudiante.getNombreCompleto(),estudiante.getCarrera(),
       estudiante.getEmail(),estudiante.getCalificacion(),estudiante.getTelefono())>0){
         
-      return estudiante;
+      return true;
     } else{
-      return null;
+      return false;
     }
   }
   
@@ -53,29 +53,23 @@ public class EstudianteDAO {
     CallableStatement cstmt = null;
     int rs = 0;
     conexion = Conexion.conectarMySQL();
-    String  query = " execute dbo.createSala @identificador = ? ,"
+    /*String  query = " execute dbo.createSala @identificador = ? ,"
         + "@ubicacion = ? ,@capacidadMax = ? ,@estado = ?,@calificacion = ?";
     CallableStatement consulta = conexion.prepareCall(query);
-    consulta.setString(1, "SAL-00000");
-    consulta.setString(2,"uh");
-    consulta.setInt(3,20);
-    consulta.setString(4,"acti");
-    consulta.setInt(5,100);
-    consulta.execute();
-   /* cstmt = conexion.prepareCall("{call dbo.agregarEstudiante(?,?,?,?,?,?)}");
+    consulta.setInt(1, "pCarnet");
+    consulta.setString(2,"pNombreCompleto");
+    consulta.setString(3,pCarrera);
+    consulta.setString(4,"pEmail");
+    consulta.execute();*/
+    cstmt = conexion.prepareCall("{call agregarEstudiante(?,?,?,?,?)}");
     cstmt.setInt(1,pCarnet);
     cstmt.setString(2,pNombreCompleto);
     cstmt.setString(3,pCarrera);
     cstmt.setString(4,pEmail);
-    cstmt.setInt(5,100);
-    cstmt.setString(6,pTelefono);
+    cstmt.setString(5,pTelefono);
     //se utiliza executeUpdate porque retorna un 1 si se inserto el objeto, 0 en caso contrario
     rs = cstmt.executeUpdate();
-    System.out.println(rs);
-    return rs;*/
-   System.out.println("si");
-   return 1;
-   
+    return rs;   
   }
  
   

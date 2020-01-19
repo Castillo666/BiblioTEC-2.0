@@ -24,6 +24,7 @@ import javax.annotation.Resource;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -82,36 +83,65 @@ public class ControladorAgregarEstudiante extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        /*try {
-            PrintWriter salida = response.getWriter();
-            modelo = new Estudiante(201890,"Laura","IDI","h","980");
-            Estudiante estudianteActual = dao.agregarEstudiante(modelo);
-            salida.println("wi");
-
-            if (estudianteActual != null) {
-                salida.println("wi");
-            } else {
-                salida.println("fail");
+      PrintWriter out = response.getWriter();
+      String carnet = request.getParameter("carnetEstudiante").toString();
+      String nombre = request.getParameter("nombreEstudiante").toString();
+      String email = request.getParameter("emailEstudiante").toString();
+      String tel = request.getParameter("telEstudiante").toString();
+      String carrera = request.getParameter("carrera").toString();
+      if (!"".equals(request.getParameter("carnetEstudiante")) && !"".equals(nombre)
+          && !"".equals(email) && !"".equals(tel)){  
+        if (existeCarnet(carnet, request) == false){
+            try {
+              int carnetInt = Integer.parseInt(carnet);
+              Estudiante modelo = new Estudiante(carnetInt, nombre, carrera, email,tel);
+              dao.agregarEstudiante(modelo);
+              RequestDispatcher rd = request.getRequestDispatcher("/agregarEstudiante.html");
+              rd.include(request, response);
+              response.setContentType("text/html");  
+              out.println("<script type=\"text/javascript\">");  
+              out.println("alert('Se ha registrado el estudiante exitosamente');");  
+              out.println("</script>");
                 
-            } 
-        } catch (SQLException ex) {
-            System.out.println("wi");
-
-            Logger.getLogger(ControladorAgregarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-        PrintWriter salida = response.getWriter();
-        conexion = Conexion.conectarMySQL();
-        String sql = ("select * from Estudiante");
-        try {
-            ps = (com.mysql.jdbc.PreparedStatement)conexion.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-              salida.println(rs.getInt(1));
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorAgregarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(ControladorAgregarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+        
+        }else{
+          RequestDispatcher rd = request.getRequestDispatcher("/agregarEstudiante.html");
+          rd.include(request, response);
+          response.setContentType("text/html");  
+          out.println("<script type=\"text/javascript\">");  
+          out.println("alert('Ya existe un estudiante registrado con ese carnet');");  
+          out.println("</script>");
         }
-   } 
+      }else{
+         RequestDispatcher rd = request.getRequestDispatcher("/agregarEstudiante.html");
+         rd.include(request, response);
+         response.setContentType("text/html");  
+         out.println("<script type=\"text/javascript\">");  
+         out.println("alert('Por favor no deje espacios en blanco');");  
+         out.println("</script>");
+      }
+ }
+    
+    
+  public boolean existeCarnet(String pCarnet,HttpServletRequest request ){
+    conexion = Conexion.conectarMySQL();
+     String sql = ("select * from Estudiante where carnet = '" +request.getParameter("carnetEstudiante") + "'");
+    try {
+      ps = (com.mysql.jdbc.PreparedStatement)conexion.prepareStatement(sql);
+      ResultSet rs = ps.executeQuery();
+      if(rs.next()){
+        if ( rs != null){
+          return true;
+        }
+      }  
+    } catch (SQLException ex) {
+      Logger.getLogger(ControladorAgregarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+    }return false;
+  }
+     
     /**
      * Handles the HTTP <code>POST</code> method.
      *
