@@ -20,7 +20,7 @@ public class UsuarioDAO {
    * @throws SQLException si el procedimiento no se realizo con exito 
    */
   public Usuario iniciarSesion(Usuario usuario) throws SQLException{
-    if(comprobarContraseña(usuario.getNombreUsuario(),usuario.getContraseña())==1){
+    if(comprobarContraseña(usuario.getNombreUsuario(),usuario.getContraseña(),usuario.getTipo())==1){
       return usuario;
     } else{
       return null;
@@ -35,15 +35,16 @@ public class UsuarioDAO {
    * @return 1 si funciona, 0 si no
    * @throws SQLException si el procedimiento no se realizo con exito 
    */
-  public int comprobarContraseña(String pUsuario, String pContraseña) throws SQLException{
+  public int comprobarContraseña(String pUsuario, String pContraseña,String pTipo) throws SQLException{
     int resultado = 2;
-    CallableStatement cstmt = null;
-    ResultSet rs = null;
     Conexion cn = new Conexion();
     conexion = cn.conectarMySQL();
-    cstmt = conexion.prepareCall("{call dbo.consultarUsuario(?,?)}");
+    CallableStatement cstmt = null;
+    ResultSet rs = null;
+    cstmt = conexion.prepareCall("{call consultarUsuario(?,?,?)}");
     cstmt.setString(1, pUsuario);
     cstmt.setString(2, pContraseña);
+    cstmt.setString(3, pTipo);
     cstmt.executeQuery();
     rs = cstmt.getResultSet();
     //si rs.next funciona quiere decir que el valor si coincide 

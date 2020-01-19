@@ -8,7 +8,7 @@ public class Usuario {
     
   private String nombreUsuario;
   private String contraseña;
-
+  private String tipo;
   
   /**
    * Constructor
@@ -18,12 +18,13 @@ public class Usuario {
   
   /**
    * Constructor
-   * @param pNombre nombre de usuario
-   * @param pContraseña  contraseña del usuario
+   * @param pNombre
+   * @param pContraseña 
    */
-  public Usuario(String pNombre, String pContraseña) {
+  public Usuario(String pNombre, String pContraseña, String pTipo) {
     this.nombreUsuario = pNombre;
     this.contraseña = pContraseña;
+    this.tipo = pTipo;
   }  
 
   
@@ -46,7 +47,14 @@ public class Usuario {
     this.contraseña = pContraseña;
   }
   
+
+  public String getTipo(){
+    return tipo; 
+  }
   
+  public void setTipo(String pTipo){
+    this.tipo = pTipo;
+  }
      
    /**
    * Método para convertir en String toda la información del Usuario
@@ -56,7 +64,7 @@ public class Usuario {
   @Override
   public String toString(){
     String msg;
-    msg = "Nombre:  " + nombreUsuario + "Contraseña: " + contraseña;
+    msg = "Nombre:  " + nombreUsuario + "Contraseña: " + contraseña + "Tipo: " + tipo;
     return msg;     
     } 
   
